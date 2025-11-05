@@ -69,11 +69,19 @@ function AppContent() {
       <BrowserRouter>
         <CssBaseline />
         {user && <Navigation />}
-        <div className="container" style={{ marginTop: user ? 0 : '28px' }}>
-          <main>
+        {!user ? (
+          <main style={{ width: '100%', minHeight: '100vh' }}>
             <Routes>
-              <Route path="/login" element={!user ? <Login /> : <Navigate to={user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard'} replace />} />
-              <Route path="/register" element={!user ? <Register /> : <Navigate to={user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard'} replace />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </main>
+        ) : (
+          <main style={{ width: '100%' }}>
+            <Routes>
+              <Route path="/login" element={<Navigate to={user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard'} replace />} />
+              <Route path="/register" element={<Navigate to={user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard'} replace />} />
               <Route
                 path="/teacher/dashboard"
                 element={
@@ -90,10 +98,10 @@ function AppContent() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/" element={<Navigate to={user ? (user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard') : '/login'} replace />} />
+              <Route path="/" element={<Navigate to={user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard'} replace />} />
             </Routes>
           </main>
-        </div>
+        )}
       </BrowserRouter>
     </ThemeProvider>
   )

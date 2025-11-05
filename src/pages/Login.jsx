@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import API from '../api';
-import { FiLogIn, FiUser, FiLock, FiBook, FiInfo, FiCopy, FiCheck } from 'react-icons/fi';
+import { FiLogIn, FiUser, FiLock, FiBook, FiInfo, FiCopy, FiCheck, FiEye, FiEyeOff } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import AnimatedCard from '../components/AnimatedCard';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -13,12 +12,14 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showDemo, setShowDemo] = useState(true);
   const [copied, setCopied] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const demoAccounts = [
-    { role: 'Teacher', username: 'teacher', password: 'teacher123', icon: '👨‍🏫' },
-    { role: 'Student', username: 'student', password: 'student123', icon: '👨‍🎓' }
+    { role: 'Teacher', username: 'teacher', password: 'teacher123', icon: '👨‍🏫', name: 'Dr. Sarah Johnson' },
+    { role: 'Student', username: 'student', password: 'student123', icon: '👨‍🎓', name: 'Alex Martinez' },
+    { role: 'Student', username: 'student2', password: 'student123', icon: '👩‍🎓', name: 'Emma Wilson' }
   ];
 
   const copyToClipboard = (text, type) => {
@@ -71,331 +72,491 @@ export default function Login() {
 
   return (
     <div style={{ 
+      width: '100%',
       minHeight: '100vh', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
       padding: '20px',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       position: 'relative',
-      overflow: 'hidden'
+      boxSizing: 'border-box'
     }}>
-      {/* Animated background elements */}
+      {/* Decorative circles */}
       <div style={{
         position: 'absolute',
-        width: '500px',
-        height: '500px',
+        width: '300px',
+        height: '300px',
         borderRadius: '50%',
         background: 'rgba(255,255,255,0.1)',
-        top: '-250px',
-        right: '-250px',
-        animation: 'float 20s ease-in-out infinite'
+        top: '-100px',
+        right: '-100px',
+        filter: 'blur(40px)'
       }} />
       <div style={{
         position: 'absolute',
-        width: '400px',
-        height: '400px',
+        width: '250px',
+        height: '250px',
         borderRadius: '50%',
         background: 'rgba(255,255,255,0.08)',
-        bottom: '-200px',
-        left: '-200px',
-        animation: 'float 15s ease-in-out infinite reverse'
+        bottom: '-80px',
+        left: '-80px',
+        filter: 'blur(40px)'
       }} />
 
-      <AnimatedCard delay={0.1}>
-        <div className="card" style={{ 
-          maxWidth: '480px', 
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{
           width: '100%',
-          background: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px',
-          padding: '40px',
+          maxWidth: '460px',
+          position: 'relative',
+          zIndex: 1,
+          margin: '0 auto'
+        }}
+      >
+        <div style={{ 
+          background: 'white',
+          borderRadius: '24px',
+          padding: '48px 40px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.3)'
+          border: '1px solid rgba(255,255,255,0.2)'
         }}>
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', duration: 0.5 }}
+              transition={{ type: 'spring', duration: 0.6, delay: 0.1 }}
               style={{
-                width: '80px',
-                height: '80px',
-                margin: '0 auto 20px',
-                background: 'linear-gradient(135deg, #FF4433 0%, #ff7a59 100%)',
-                borderRadius: '20px',
+                width: '72px',
+                height: '72px',
+                margin: '0 auto 24px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: '18px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 10px 30px rgba(255, 68, 51, 0.3)'
+                boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
               }}
             >
-              <FiBook size={40} color="white" />
+              <FiBook size={36} color="white" />
             </motion.div>
             <h1 style={{ 
               margin: 0, 
-              fontSize: '28px', 
-              fontWeight: 'bold',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              marginBottom: '8px'
+              fontSize: '32px', 
+              fontWeight: '700',
+              color: '#1e293b',
+              marginBottom: '8px',
+              letterSpacing: '-0.5px'
             }}>
               Learning Tracker
             </h1>
-            <p style={{ color: '#6b7280', margin: 0, fontSize: '14px' }}>
-              Track your learning progress and outcomes
+            <p style={{ color: '#64748b', margin: 0, fontSize: '15px' }}>
+              Sign in to access your dashboard
             </p>
           </div>
 
-          {/* Demo Accounts Card */}
+          {/* Demo Accounts */}
           {showDemo && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              transition={{ duration: 0.3 }}
               style={{
-                background: 'linear-gradient(135deg, #667eea15 0%, #764ba215 100%)',
-                borderRadius: '12px',
+                background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+                borderRadius: '16px',
                 padding: '20px',
-                marginBottom: '25px',
-                border: '1px solid rgba(102, 126, 234, 0.2)'
+                marginBottom: '28px',
+                border: '1px solid rgba(102, 126, 234, 0.15)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
-                <FiInfo size={18} color="#667eea" />
-                <strong style={{ color: '#667eea', fontSize: '14px' }}>Demo Accounts</strong>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <FiInfo size={18} color="#667eea" />
+                  <strong style={{ color: '#667eea', fontSize: '14px', fontWeight: '600' }}>Demo Accounts</strong>
+                </div>
                 <button
                   onClick={() => setShowDemo(false)}
                   style={{
-                    marginLeft: 'auto',
                     background: 'none',
                     border: 'none',
-                    fontSize: '18px',
+                    fontSize: '20px',
                     cursor: 'pointer',
-                    color: '#6b7280'
+                    color: '#94a3b8',
+                    padding: '4px 8px',
+                    borderRadius: '6px',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(148, 163, 184, 0.1)';
+                    e.target.style.color = '#64748b';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'none';
+                    e.target.style.color = '#94a3b8';
                   }}
                 >
                   ×
                 </button>
               </div>
-              {demoAccounts.map((account, idx) => (
-                <div key={idx} style={{
-                  background: 'white',
-                  borderRadius: '8px',
-                  padding: '12px',
-                  marginBottom: '10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  border: '1px solid rgba(0,0,0,0.05)'
-                }}>
-                  <span style={{ fontSize: '24px' }}>{account.icon}</span>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: '600', fontSize: '14px', marginBottom: '4px' }}>
-                      {account.role}
-                    </div>
-                    <div style={{ fontSize: '12px', color: '#6b7280', display: 'flex', gap: '12px' }}>
-                      <span>
-                        <strong>User:</strong> {account.username}
-                        <button
-                          onClick={() => copyToClipboard(account.username, `user-${idx}`)}
-                          style={{ marginLeft: '6px', background: 'none', border: 'none', cursor: 'pointer' }}
-                        >
-                          {copied === `user-${idx}` ? <FiCheck size={12} color="#10b981" /> : <FiCopy size={12} />}
-                        </button>
-                      </span>
-                      <span>
-                        <strong>Pass:</strong> {account.password}
-                        <button
-                          onClick={() => copyToClipboard(account.password, `pass-${idx}`)}
-                          style={{ marginLeft: '6px', background: 'none', border: 'none', cursor: 'pointer' }}
-                        >
-                          {copied === `pass-${idx}` ? <FiCheck size={12} color="#10b981" /> : <FiCopy size={12} />}
-                        </button>
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => quickLogin(account.username, account.password)}
-                    style={{
-                      padding: '8px 16px',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '6px',
-                      cursor: 'pointer',
-                      fontWeight: '600',
-                      fontSize: '12px',
-                      transition: 'transform 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-                    onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {demoAccounts.map((account, idx) => (
+                  <div key={idx} style={{
+                    background: 'white',
+                    borderRadius: '12px',
+                    padding: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    transition: 'all 0.2s',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#667eea';
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(102, 126, 234, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                   >
-                    Quick Login
-                  </button>
-                </div>
-              ))}
+                    <span style={{ fontSize: '28px' }}>{account.icon}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: '600', fontSize: '14px', marginBottom: '2px', color: '#1e293b' }}>
+                        {account.role}
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '4px' }}>
+                        {account.name}
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#94a3b8', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <strong style={{ color: '#64748b' }}>User:</strong> 
+                          <code style={{ 
+                            background: '#f1f5f9', 
+                            padding: '2px 6px', 
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontFamily: 'monospace'
+                          }}>
+                            {account.username}
+                          </code>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyToClipboard(account.username, `user-${idx}`);
+                            }}
+                            style={{ 
+                              background: 'none', 
+                              border: 'none', 
+                              cursor: 'pointer',
+                              padding: '2px',
+                              display: 'flex',
+                              alignItems: 'center'
+                            }}
+                          >
+                            {copied === `user-${idx}` ? (
+                              <FiCheck size={12} color="#10b981" />
+                            ) : (
+                              <FiCopy size={12} color="#94a3b8" />
+                            )}
+                          </button>
+                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <strong style={{ color: '#64748b' }}>Pass:</strong> 
+                          <code style={{ 
+                            background: '#f1f5f9', 
+                            padding: '2px 6px', 
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontFamily: 'monospace'
+                          }}>
+                            {account.password}
+                          </code>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyToClipboard(account.password, `pass-${idx}`);
+                            }}
+                            style={{ 
+                              background: 'none', 
+                              border: 'none', 
+                              cursor: 'pointer',
+                              padding: '2px',
+                              display: 'flex',
+                              alignItems: 'center'
+                            }}
+                          >
+                            {copied === `pass-${idx}` ? (
+                              <FiCheck size={12} color="#10b981" />
+                            ) : (
+                              <FiCopy size={12} color="#94a3b8" />
+                            )}
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => quickLogin(account.username, account.password)}
+                      disabled={loading}
+                      style={{
+                        padding: '10px 18px',
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '10px',
+                        cursor: loading ? 'not-allowed' : 'pointer',
+                        fontWeight: '600',
+                        fontSize: '13px',
+                        transition: 'all 0.2s',
+                        whiteSpace: 'nowrap',
+                        opacity: loading ? 0.6 : 1
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!loading) {
+                          e.target.style.transform = 'translateY(-2px)';
+                          e.target.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    >
+                      Quick Login
+                    </button>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           )}
 
           {error && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
               style={{
-                color: '#ef4444',
+                color: '#dc2626',
                 marginBottom: '20px',
-                padding: '12px',
-                background: '#fee',
-                borderRadius: '8px',
-                border: '1px solid #fcc',
-                fontSize: '14px'
+                padding: '14px 16px',
+                background: '#fef2f2',
+                borderRadius: '12px',
+                border: '1px solid #fecaca',
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}
             >
+              <span style={{ fontSize: '18px' }}>⚠️</span>
               {error}
             </motion.div>
           )}
 
-          <form onSubmit={handleSubmit} className="form">
+          <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#374151', fontSize: '14px' }}>
-                <FiUser size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '10px', 
+                fontWeight: '600', 
+                color: '#374151', 
+                fontSize: '14px' 
+              }}>
                 Username or Email
               </label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                placeholder="Enter username or email"
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  borderRadius: '10px',
-                  border: '2px solid #e5e7eb',
-                  fontSize: '15px',
-                  transition: 'all 0.3s',
-                  background: 'white'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#667eea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e5e7eb';
-                  e.target.style.boxShadow = 'none';
-                }}
-              />
+              <div style={{ position: 'relative' }}>
+                <FiUser 
+                  size={18} 
+                  style={{ 
+                    position: 'absolute', 
+                    left: '16px', 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    color: '#94a3b8'
+                  }} 
+                />
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  placeholder="Enter username or email"
+                  style={{
+                    width: '100%',
+                    padding: '14px 16px 14px 44px',
+                    borderRadius: '12px',
+                    border: '2px solid #e2e8f0',
+                    fontSize: '15px',
+                    transition: 'all 0.3s',
+                    background: 'white',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#667eea';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e2e8f0';
+                    e.target.style.boxShadow = 'none';
+                  }}
+                />
+              </div>
             </div>
 
-            <div style={{ marginBottom: '25px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#374151', fontSize: '14px' }}>
-                <FiLock size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <div style={{ marginBottom: '28px' }}>
+              <label style={{ 
+                display: 'block', 
+                marginBottom: '10px', 
+                fontWeight: '600', 
+                color: '#374151', 
+                fontSize: '14px' 
+              }}>
                 Password
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter password"
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  borderRadius: '10px',
-                  border: '2px solid #e5e7eb',
-                  fontSize: '15px',
-                  transition: 'all 0.3s',
-                  background: 'white'
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#667eea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = '#e5e7eb';
-                  e.target.style.boxShadow = 'none';
-                }}
-              />
+              <div style={{ position: 'relative' }}>
+                <FiLock 
+                  size={18} 
+                  style={{ 
+                    position: 'absolute', 
+                    left: '16px', 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    color: '#94a3b8'
+                  }} 
+                />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter password"
+                  style={{
+                    width: '100%',
+                    padding: '14px 44px 14px 44px',
+                    borderRadius: '12px',
+                    border: '2px solid #e2e8f0',
+                    fontSize: '15px',
+                    transition: 'all 0.3s',
+                    background: 'white',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#667eea';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e2e8f0';
+                    e.target.style.boxShadow = 'none';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: '16px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: '#94a3b8',
+                    padding: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    transition: 'color 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.target.style.color = '#64748b'}
+                  onMouseLeave={(e) => e.target.style.color = '#94a3b8'}
+                >
+                  {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                </button>
+              </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  flex: 1,
-                  padding: '14px',
-                  background: loading
-                    ? '#9ca3af'
-                    : 'linear-gradient(135deg, #FF4433 0%, #ff7a59 100%)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.3s',
-                  boxShadow: loading ? 'none' : '0 4px 15px rgba(255, 68, 51, 0.3)'
-                }}
-                onMouseEnter={(e) => !loading && (e.target.style.transform = 'translateY(-2px)')}
-                onMouseLeave={(e) => !loading && (e.target.style.transform = 'translateY(0)')}
-              >
-                {loading ? (
-                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                    <span style={{
-                      width: '16px',
-                      height: '16px',
-                      border: '2px solid white',
-                      borderTop: 'none',
-                      borderRadius: '50%',
-                      animation: 'spin 0.8s linear infinite'
-                    }} />
-                    Logging in...
-                  </span>
-                ) : (
-                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                    <FiLogIn size={18} />
-                    Login
-                  </span>
-                )}
-              </button>
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '16px',
+                background: loading
+                  ? '#94a3b8'
+                  : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                transition: 'all 0.3s',
+                boxShadow: loading ? 'none' : '0 4px 16px rgba(102, 126, 234, 0.4)',
+                marginBottom: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 16px rgba(102, 126, 234, 0.4)';
+                }
+              }}
+            >
+              {loading ? (
+                <>
+                  <span style={{
+                    width: '16px',
+                    height: '16px',
+                    border: '2px solid white',
+                    borderTop: 'none',
+                    borderRadius: '50%',
+                    animation: 'spin 0.8s linear infinite'
+                  }} />
+                  Logging in...
+                </>
+              ) : (
+                <>
+                  <FiLogIn size={18} />
+                  Sign In
+                </>
+              )}
+            </button>
+
+            <div style={{ textAlign: 'center' }}>
               <button
                 type="button"
                 onClick={() => navigate('/register')}
                 style={{
-                  padding: '14px 24px',
-                  background: 'white',
+                  background: 'none',
+                  border: 'none',
                   color: '#667eea',
-                  border: '2px solid #667eea',
-                  borderRadius: '10px',
-                  fontSize: '16px',
+                  fontSize: '14px',
                   fontWeight: '600',
                   cursor: 'pointer',
-                  transition: 'all 0.3s'
+                  padding: '8px',
+                  transition: 'color 0.2s'
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#667eea';
-                  e.target.style.color = 'white';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'white';
-                  e.target.style.color = '#667eea';
-                }}
+                onMouseEnter={(e) => e.target.style.color = '#764ba2'}
+                onMouseLeave={(e) => e.target.style.color = '#667eea'}
               >
-                Register
+                Don't have an account? <span style={{ textDecoration: 'underline' }}>Register</span>
               </button>
             </div>
           </form>
         </div>
-      </AnimatedCard>
+      </motion.div>
 
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) rotate(0deg); }
-          50% { transform: translate(20px, -20px) rotate(5deg); }
-        }
         @keyframes spin {
           to { transform: rotate(360deg); }
         }
@@ -403,4 +564,3 @@ export default function Login() {
     </div>
   );
 }
-

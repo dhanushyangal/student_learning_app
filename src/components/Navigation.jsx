@@ -12,7 +12,7 @@ import {
   FiFileText,
   FiUser
 } from 'react-icons/fi';
-import { AppBar, Toolbar, Typography, Button, IconButton, Box, Switch } from '@mui/material';
+import { Switch } from '@mui/material';
 
 export default function Navigation() {
   const { user, logout } = useAuth();
@@ -33,65 +33,138 @@ export default function Navigation() {
   const isStudent = user.role === 'student';
 
   return (
-    <AppBar 
-      position="sticky" 
-      sx={{ 
-        background: darkMode ? 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)' : 'linear-gradient(135deg, #FF4433 0%, #ff7a59 100%)',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-      }}
-    >
-      <Toolbar>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1 }}>
-          <FiBook size={24} />
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+    <nav style={{
+      position: 'sticky',
+      top: 0,
+      width: '100%',
+      background: darkMode ? '#1e293b' : '#6366f1',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+      zIndex: 1000,
+      borderBottom: '1px solid rgba(255,255,255,0.1)'
+    }}>
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '0 24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: '64px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <FiBook size={24} color="white" />
+          <span style={{ fontWeight: 'bold', color: 'white', fontSize: '1.125rem' }}>
             Learning Tracker
-          </Typography>
-        </Box>
+          </span>
+        </div>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {isTeacher && (
             <>
-              <Button
-                color="inherit"
-                component={Link}
+              <Link
                 to="/teacher/dashboard"
-                startIcon={<FiHome />}
-                sx={{ 
+                style={{
+                  padding: '8px 16px',
                   color: location.pathname === '/teacher/dashboard' ? '#fff' : 'rgba(255,255,255,0.8)',
-                  fontWeight: location.pathname === '/teacher/dashboard' ? 'bold' : 'normal'
+                  fontWeight: location.pathname === '/teacher/dashboard' ? 'bold' : 'normal',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
                 }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
               >
-                Dashboard
-              </Button>
-              <Button
-                color="inherit"
-                component={Link}
+                <FiHome size={18} /> Dashboard
+              </Link>
+              <Link
                 to="/teacher/dashboard"
-                startIcon={<FiBarChart2 />}
-                sx={{ color: 'rgba(255,255,255,0.8)' }}
+                style={{
+                  padding: '8px 16px',
+                  color: 'rgba(255,255,255,0.8)',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
               >
-                Reports
-              </Button>
+                <FiBarChart2 size={18} /> Reports
+              </Link>
             </>
           )}
 
           {isStudent && (
-            <Button
-              color="inherit"
-              component={Link}
-              to="/student/dashboard"
-              startIcon={<FiHome />}
-              sx={{ 
-                color: location.pathname === '/student/dashboard' ? '#fff' : 'rgba(255,255,255,0.8)',
-                fontWeight: location.pathname === '/student/dashboard' ? 'bold' : 'normal'
-              }}
-            >
-              Dashboard
-            </Button>
+            <>
+              <Link
+                to="/student/dashboard"
+                style={{
+                  padding: '8px 16px',
+                  color: location.pathname === '/student/dashboard' ? '#fff' : 'rgba(255,255,255,0.8)',
+                  fontWeight: location.pathname === '/student/dashboard' ? 'bold' : 'normal',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+              >
+                <FiHome size={18} /> Dashboard
+              </Link>
+              <Link
+                to="/student/dashboard"
+                style={{
+                  padding: '8px 16px',
+                  color: 'rgba(255,255,255,0.8)',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+              >
+                <FiBarChart2 size={18} /> Progress
+              </Link>
+              <Link
+                to="/student/dashboard"
+                style={{
+                  padding: '8px 16px',
+                  color: 'rgba(255,255,255,0.8)',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+              >
+                <FiFileText size={18} /> Assignments
+              </Link>
+            </>
           )}
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 2 }}>
-            <FiSun size={18} />
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            marginLeft: '24px', 
+            paddingLeft: '24px', 
+            borderLeft: '1px solid rgba(255,255,255,0.2)' 
+          }}>
+            <FiSun size={18} color="white" />
             <Switch
               checked={darkMode}
               onChange={toggleTheme}
@@ -105,28 +178,44 @@ export default function Navigation() {
                 },
               }}
             />
-            <FiMoon size={18} />
-          </Box>
+            <FiMoon size={18} color="white" />
+          </div>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 2, pl: 2, borderLeft: '1px solid rgba(255,255,255,0.2)' }}>
-            <FiUser size={18} />
-            <Typography variant="body2" sx={{ mr: 1 }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            marginLeft: '24px', 
+            paddingLeft: '24px', 
+            borderLeft: '1px solid rgba(255,255,255,0.2)' 
+          }}>
+            <FiUser size={18} color="white" />
+            <span style={{ marginRight: '8px', color: 'white', fontSize: '0.875rem' }}>
               {user.first_name} {user.last_name}
-            </Typography>
-            <IconButton
-              color="inherit"
+            </span>
+            <button
               onClick={handleLogout}
-              sx={{ 
+              style={{
+                background: 'transparent',
+                border: 'none',
                 color: 'rgba(255,255,255,0.9)',
-                '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' }
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s'
               }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
             >
-              <FiLogOut />
-            </IconButton>
-          </Box>
-        </Box>
-      </Toolbar>
-    </AppBar>
+              <FiLogOut size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }
 

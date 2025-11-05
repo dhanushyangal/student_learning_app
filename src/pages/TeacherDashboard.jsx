@@ -50,52 +50,145 @@ export default function TeacherDashboard() {
     navigate('/login');
   };
 
-  if (loading) return <div className="card"><p>Loading...</p></div>;
+  if (loading) return (
+    <div className="card" style={{ textAlign: 'center', padding: '60px' }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        border: '4px solid rgba(99, 102, 241, 0.1)',
+        borderTop: '4px solid #6366f1',
+        borderRadius: '50%',
+        margin: '0 auto 20px',
+        animation: 'spin 0.8s linear infinite'
+      }} />
+      <p style={{ color: '#64748b', fontSize: '1rem' }}>Loading your dashboard...</p>
+    </div>
+  );
 
   return (
-    <div>
-      <header>
-        <h1>
-          <span className="logo"><FiBook size={20} /></span>
-          Teacher Dashboard - {user.first_name} {user.last_name}
-        </h1>
-        <nav>
-          <button onClick={handleLogout} className="btn ghost" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <FiLogOut /> Logout
-          </button>
-        </nav>
-      </header>
+    <div style={{ width: '100%', minHeight: '100vh', background: '#f5f7fa' }}>
+      <div className="content-wrapper">
+        {/* Header */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '32px',
+          paddingTop: '24px'
+        }}>
+          <div>
+            <h1 style={{ 
+              fontSize: '2rem', 
+              fontWeight: '700', 
+              margin: '0 0 8px 0',
+              color: '#1e293b',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <span style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+              }}>
+                <FiBook size={28} />
+              </span>
+              Teacher Dashboard
+            </h1>
+            <p style={{ color: '#64748b', margin: 0, fontSize: '1rem' }}>
+              Welcome, {user.first_name} {user.last_name} • Manage your courses and students
+            </p>
+          </div>
+        </div>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '2px solid #e6e9ef' }}>
+      <div style={{ 
+        display: 'flex', 
+        gap: '8px', 
+        marginBottom: '32px', 
+        paddingBottom: '16px',
+        borderBottom: '2px solid rgba(99, 102, 241, 0.1)',
+        overflowX: 'auto'
+      }}>
         <button
           onClick={() => setActiveTab('courses')}
           className={activeTab === 'courses' ? 'btn' : 'btn ghost'}
-          style={{ borderBottom: activeTab === 'courses' ? '2px solid var(--accent)' : 'none' }}
+          style={{ 
+            borderRadius: '12px',
+            padding: '12px 24px',
+            borderBottom: 'none',
+            position: 'relative',
+            ...(activeTab === 'courses' && {
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+            })
+          }}
         >
-          <FiBook /> Courses
+          <FiBook size={18} /> Courses
         </button>
         <button
           onClick={() => setActiveTab('assessments')}
           className={activeTab === 'assessments' ? 'btn' : 'btn ghost'}
-          style={{ borderBottom: activeTab === 'assessments' ? '2px solid var(--accent)' : 'none' }}
+          style={{ 
+            borderRadius: '12px',
+            padding: '12px 24px',
+            borderBottom: 'none',
+            ...(activeTab === 'assessments' && {
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+            })
+          }}
         >
-          <FiFileText /> Assessments
+          <FiFileText size={18} /> Assessments
         </button>
         <button
           onClick={() => setActiveTab('reports')}
           className={activeTab === 'reports' ? 'btn' : 'btn ghost'}
-          style={{ borderBottom: activeTab === 'reports' ? '2px solid var(--accent)' : 'none' }}
+          style={{ 
+            borderRadius: '12px',
+            padding: '12px 24px',
+            borderBottom: 'none',
+            ...(activeTab === 'reports' && {
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+            })
+          }}
         >
-          <FiBarChart2 /> Reports
+          <FiBarChart2 size={18} /> Reports
         </button>
       </div>
 
       {activeTab === 'courses' && (
         <div className="card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h2>My Courses</h2>
-            <button onClick={() => { setShowCourseForm(true); setSelectedCourse(null); }} className="btn">
-              <FiPlus /> New Course
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            marginBottom: '24px',
+            flexWrap: 'wrap',
+            gap: '16px'
+          }}>
+            <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <FiBook size={24} color="#6366f1" />
+              My Courses
+            </h2>
+            <button 
+              onClick={() => { setShowCourseForm(true); setSelectedCourse(null); }} 
+              className="btn"
+              style={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+              }}
+            >
+              <FiPlus size={18} /> New Course
             </button>
           </div>
 
@@ -108,8 +201,20 @@ export default function TeacherDashboard() {
                   <div style={{ flex: 1 }}>
                     <strong>{course.name} ({course.code})</strong>
                     <p>{course.description || 'No description'}</p>
-                    <div className="meta">
-                      <FiUsers /> {course.enrolled_students || 0} students enrolled
+                    <div className="meta" style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '8px',
+                      marginTop: '8px',
+                      padding: '6px 12px',
+                      background: 'rgba(99, 102, 241, 0.05)',
+                      borderRadius: '8px',
+                      width: 'fit-content'
+                    }}>
+                      <FiUsers size={16} /> 
+                      <span style={{ fontWeight: '600', color: '#6366f1' }}>
+                        {course.enrolled_students || 0} students enrolled
+                      </span>
                     </div>
                   </div>
                   <div className="actions">
@@ -195,6 +300,7 @@ export default function TeacherDashboard() {
           onSuccess={() => { setShowGradeForm(false); setAssessmentToGrade(null); fetchData(); }}
         />
       )}
+      </div>
     </div>
   );
 }
