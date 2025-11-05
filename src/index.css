@@ -18,23 +18,25 @@ html,body,#root{ height:100%; }
 body{
 	margin:0;
 	font-family: var(--mono);
-	/* Red-orange background for all pages */
-	background: #FF4433;
+	/* Gradient background for all pages */
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 	color: #0f172a;
 	-webkit-font-smoothing:antialiased;
 	-moz-osx-font-smoothing:grayscale;
 	padding: 28px;
+	min-height: 100vh;
 }
 
 .container{
 	width:100%;
 	max-width: var(--max-width);
 	margin: 0 auto;
-	/* Slightly warm white card for readability on orange background */
-	background: linear-gradient(180deg, #ffffff, #fffaf0);
-	border-radius: var(--radius);
-	padding: 20px;
-	box-shadow: var(--shadow);
+	/* Modern glass-morphism card */
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 20px;
+	padding: 30px;
+	box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+	border: 1px solid rgba(255,255,255,0.3);
 }
 
 /* Header */
