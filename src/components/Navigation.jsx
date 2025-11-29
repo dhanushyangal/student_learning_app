@@ -72,12 +72,12 @@ export default function Navigation() {
   const isStudent = user.role === 'student';
 
   const navLinks = isTeacher ? [
-    { to: '/teacher/dashboard', label: 'Dashboard', icon: FiHome },
-    { to: '/teacher/dashboard', label: 'Reports', icon: FiBarChart2 }
+    { to: '/teacher/dashboard?tab=courses', label: 'Dashboard', icon: FiHome, tab: 'courses' },
+    { to: '/teacher/dashboard?tab=reports', label: 'Reports', icon: FiBarChart2, tab: 'reports' }
   ] : [
-    { to: '/student/dashboard', label: 'Dashboard', icon: FiHome },
-    { to: '/student/dashboard', label: 'Progress', icon: FiBarChart2 },
-    { to: '/student/dashboard', label: 'Assignments', icon: FiFileText }
+    { to: '/student/dashboard?tab=overview', label: 'Dashboard', icon: FiHome, tab: 'overview' },
+    { to: '/student/dashboard?tab=performance', label: 'Progress', icon: FiBarChart2, tab: 'performance' },
+    { to: '/student/dashboard?tab=assignments', label: 'Assignments', icon: FiFileText, tab: 'assignments' }
   ];
 
   return (
@@ -121,7 +121,9 @@ export default function Navigation() {
           }}>
             {navLinks.map((link, idx) => {
               const Icon = link.icon;
-              const isActive = location.pathname === link.to;
+              const searchParams = new URLSearchParams(location.search);
+              const currentTab = searchParams.get('tab') || (isTeacher ? 'courses' : 'overview');
+              const isActive = location.pathname.includes(link.to.split('?')[0]) && currentTab === link.tab;
               return (
                 <Link
                   key={idx}
@@ -186,7 +188,7 @@ export default function Navigation() {
                 fontSize: '0.875rem',
                 display: window.innerWidth > 1024 ? 'inline' : 'none'
               }}>
-                {user.first_name} {user.last_name}
+                {user.first_name} {user.last_name} <span style={{ opacity: 0.8, fontSize: '0.8125rem' }}>({user.role === 'teacher' ? 'Teacher' : 'Student'})</span>
               </span>
               <button
                 onClick={handleLogout}
@@ -300,7 +302,9 @@ export default function Navigation() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
               {navLinks.map((link, idx) => {
                 const Icon = link.icon;
-                const isActive = location.pathname === link.to;
+                const searchParams = new URLSearchParams(location.search);
+                const currentTab = searchParams.get('tab') || (isTeacher ? 'courses' : 'overview');
+                const isActive = location.pathname.includes(link.to.split('?')[0]) && currentTab === link.tab;
                 return (
                   <Link
                     key={idx}

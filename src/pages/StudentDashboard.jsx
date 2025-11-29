@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import API from '../api';
@@ -26,12 +26,27 @@ export default function StudentDashboard() {
   const { user, logout } = useAuth();
   const { darkMode } = useTheme();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [studentData, setStudentData] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseProgress, setCourseProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [showCourseBrowser, setShowCourseBrowser] = useState(false);
+
+  // Read tab from URL params
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl && ['overview', 'courses', 'assignments', 'performance', 'achievements'].includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams]);
+
+  // Update URL when tab changes
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
 
   useEffect(() => {
     if (!user || user.role !== 'student') {
@@ -255,7 +270,7 @@ export default function StudentDashboard() {
             <button
               key={tab.id}
               className="tab-button"
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabChange(tab.id)}
               style={{
                 padding: '12px 24px',
                 border: 'none',

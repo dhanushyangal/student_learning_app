@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import API from '../api';
@@ -13,6 +13,7 @@ export default function TeacherDashboard() {
   const { user, logout } = useAuth();
   const { darkMode } = useTheme();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [courses, setCourses] = useState([]);
   const [assessments, setAssessments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,6 +24,20 @@ export default function TeacherDashboard() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedAssessment, setSelectedAssessment] = useState(null);
   const [assessmentToGrade, setAssessmentToGrade] = useState(null);
+
+  // Read tab from URL params
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl && ['courses', 'assessments', 'reports'].includes(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams]);
+
+  // Update URL when tab changes
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
 
   useEffect(() => {
     if (!user || user.role !== 'teacher') {
@@ -123,7 +138,7 @@ export default function TeacherDashboard() {
         msOverflowStyle: 'none'
       }}>
         <button
-          onClick={() => setActiveTab('courses')}
+          onClick={() => handleTabChange('courses')}
           className={`tab-button ${activeTab === 'courses' ? 'btn' : 'btn ghost'}`}
           style={{ 
             borderRadius: '12px',
@@ -143,7 +158,7 @@ export default function TeacherDashboard() {
           <FiBook size={18} /> Courses
         </button>
         <button
-          onClick={() => setActiveTab('assessments')}
+          onClick={() => handleTabChange('assessments')}
           className={`tab-button ${activeTab === 'assessments' ? 'btn' : 'btn ghost'}`}
           style={{ 
             borderRadius: '12px',
@@ -162,7 +177,7 @@ export default function TeacherDashboard() {
           <FiFileText size={18} /> Assessments
         </button>
         <button
-          onClick={() => setActiveTab('reports')}
+          onClick={() => handleTabChange('reports')}
           className={`tab-button ${activeTab === 'reports' ? 'btn' : 'btn ghost'}`}
           style={{ 
             borderRadius: '12px',
@@ -336,7 +351,7 @@ export default function TeacherDashboard() {
                     <button onClick={() => { setSelectedCourse(course); setShowCourseForm(true); }} className="btn icon">
                       <FiEdit2 />
                     </button>
-                    <button onClick={() => { setSelectedCourse(course); setActiveTab('reports'); }} className="btn icon">
+                    <button onClick={() => { setSelectedCourse(course); handleTabChange('reports'); }} className="btn icon">
                       <FiBarChart2 />
                     </button>
                   </div>
@@ -412,7 +427,7 @@ export default function TeacherDashboard() {
                 </button>
               ) : (
                 <button 
-                  onClick={() => { setActiveTab('courses'); setShowCourseForm(true); }} 
+                  onClick={() => { handleTabChange('courses'); setShowCourseForm(true); }} 
                   className="btn"
                   style={{
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
