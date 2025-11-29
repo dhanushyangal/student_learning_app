@@ -58,12 +58,30 @@ export default function CourseForm({ course, onClose, onSuccess, teacherId }) {
       zIndex: 1000,
       padding: '20px'
     }}>
-      <div className="card" style={{ maxWidth: '500px', width: '100%', position: 'relative' }}>
+      <div className="card modal-content" style={{ maxWidth: '500px', width: '100%', position: 'relative' }}>
         <button
           onClick={onClose}
-          style={{ position: 'absolute', top: '10px', right: '10px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer' }}
+          style={{ 
+            position: 'absolute', 
+            top: '10px', 
+            right: '10px', 
+            background: '#ef4444', 
+            color: 'white', 
+            border: 'none', 
+            borderRadius: '50%', 
+            width: '40px', 
+            height: '40px', 
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: '44px',
+            minHeight: '44px',
+            zIndex: 10
+          }}
+          aria-label="Close"
         >
-          <FiX />
+          <FiX size={20} />
         </button>
         <h2>{course ? 'Edit Course' : 'Create New Course'}</h2>
         

@@ -192,7 +192,7 @@ export default function StudentDashboard() {
     <div style={{ width: '100%', minHeight: '100vh', background: '#f5f7fa' }}>
       <div className="content-wrapper">
         {/* Header */}
-        <div style={{
+        <div className="page-header" style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -207,7 +207,8 @@ export default function StudentDashboard() {
               color: '#1e293b',
               display: 'flex',
               alignItems: 'center',
-              gap: '12px'
+              gap: '12px',
+              flexWrap: 'wrap'
             }}>
               <span style={{
                 width: '56px',
@@ -218,11 +219,12 @@ export default function StudentDashboard() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'white',
-                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                flexShrink: 0
               }}>
                 <FiBook size={28} />
               </span>
-              Welcome back, {user.first_name}!
+              <span>Welcome back, {user.first_name}!</span>
             </h1>
             <p style={{ color: '#64748b', margin: 0, fontSize: '1rem' }}>
               Track your learning progress and stay on top of your assignments
@@ -231,12 +233,15 @@ export default function StudentDashboard() {
         </div>
 
         {/* Tabs */}
-        <div style={{ 
+        <div className="tabs-container" style={{ 
           display: 'flex', 
           gap: '8px', 
           marginBottom: '32px',
           borderBottom: '2px solid #e2e8f0',
-          overflowX: 'auto'
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
         }}>
           {[
             { id: 'overview', label: 'Overview', icon: FiTrendingUp },
@@ -247,6 +252,7 @@ export default function StudentDashboard() {
           ].map(tab => (
             <button
               key={tab.id}
+              className="tab-button"
               onClick={() => setActiveTab(tab.id)}
               style={{
                 padding: '12px 24px',
@@ -261,7 +267,9 @@ export default function StudentDashboard() {
                 gap: '8px',
                 fontSize: '0.9375rem',
                 transition: 'all 0.2s',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                minHeight: '44px',
+                flexShrink: 0
               }}
               onMouseEnter={(e) => {
                 if (activeTab !== tab.id) {
@@ -384,13 +392,13 @@ export default function StudentDashboard() {
             ) : (
               <>
                 {/* Statistics Cards */}
-                <div style={{ 
+                <div className="stats-grid" style={{ 
                   display: 'grid', 
                   gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
                   gap: '20px',
                   marginBottom: '32px'
                 }}>
-              <div style={{ 
+              <div className="stats-card" style={{ 
                 padding: '24px', 
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
                 borderRadius: '16px', 
@@ -402,12 +410,12 @@ export default function StudentDashboard() {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <div style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Total Courses</div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
+                <div className="stat-label" style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Total Courses</div>
+                <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
                   {studentData.courses.length}
                 </div>
               </div>
-              <div style={{ 
+              <div className="stats-card" style={{ 
                 padding: '24px', 
                 background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 
                 borderRadius: '16px', 
@@ -419,12 +427,12 @@ export default function StudentDashboard() {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <div style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Completed</div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
+                <div className="stat-label" style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Completed</div>
+                <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
                   {studentData.statistics?.graded_assessments || 0}/{studentData.statistics?.total_assessments || 0}
                 </div>
               </div>
-              <div style={{ 
+              <div className="stats-card" style={{ 
                 padding: '24px', 
                 background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
                 borderRadius: '16px', 
@@ -436,12 +444,12 @@ export default function StudentDashboard() {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <div style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Average Score</div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
+                <div className="stat-label" style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Average Score</div>
+                <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
                   {formatPercentage(studentData.statistics.average_percentage)}
                 </div>
               </div>
-              <div style={{ 
+              <div className="stats-card" style={{ 
                 padding: '24px', 
                 background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
                 borderRadius: '16px', 
@@ -453,15 +461,15 @@ export default function StudentDashboard() {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <div style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Upcoming</div>
-                <div style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
+                <div className="stat-label" style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Upcoming</div>
+                <div className="stat-value" style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
                   {upcomingAssignments.length}
                 </div>
               </div>
             </div>
 
             {/* Two Column Layout */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
+            <div className="two-column" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
               {/* Upcoming Assignments */}
               <div className="card">
                 <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
@@ -613,7 +621,7 @@ export default function StudentDashboard() {
                 </button>
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+              <div className="courses-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
                 {studentData.courses.map(course => {
                   const courseAssessments = studentData.assessments.filter(a => a.course_id === course.id);
                   const completed = courseAssessments.filter(a => a.score !== null).length;
@@ -807,7 +815,7 @@ export default function StudentDashboard() {
         {/* Performance Tab */}
         {activeTab === 'performance' && (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }}>
+            <div className="two-column" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', marginBottom: '24px' }}>
               <div className="card">
                 <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                   <FiBarChart2 size={24} color="#6366f1" />
@@ -838,7 +846,7 @@ export default function StudentDashboard() {
                 <FiBook size={24} color="#6366f1" />
                 Performance by Course
               </h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+              <div className="courses-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
                 {studentData.courses.map(course => {
                   const courseAssessments = studentData.assessments.filter(a => a.course_id === course.id);
                   const graded = courseAssessments.filter(a => a.score !== null);
@@ -899,7 +907,7 @@ export default function StudentDashboard() {
               <FiAward size={24} color="#6366f1" />
               Achievements & Progress
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+            <div className="courses-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
               {/* Achievement Cards */}
               <div style={{
                 padding: '24px',
@@ -972,7 +980,7 @@ export default function StudentDashboard() {
             zIndex: 1000,
             padding: '20px'
           }}>
-            <div className="card" style={{ maxWidth: '900px', maxHeight: '90vh', overflow: 'auto', position: 'relative', width: '100%' }}>
+            <div className="card modal-content" style={{ maxWidth: '900px', maxHeight: '90vh', overflow: 'auto', position: 'relative', width: '100%' }}>
               <button
                 onClick={() => { setSelectedCourse(null); setCourseProgress(null); }}
                 style={{ 

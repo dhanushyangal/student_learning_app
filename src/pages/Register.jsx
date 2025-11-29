@@ -44,7 +44,7 @@ export default function Register() {
   };
 
   return (
-    <div className="card" style={{ maxWidth: '500px', margin: '40px auto' }}>
+    <div className="card" style={{ maxWidth: '500px', margin: '40px auto', padding: '24px' }}>
       <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
         <span className="logo"><FiUserPlus size={20} /></span>
         Register

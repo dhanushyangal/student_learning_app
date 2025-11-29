@@ -70,7 +70,7 @@ export default function Login() {
   };
 
   return (
-    <div className="card" style={{ maxWidth: '500px', margin: '40px auto' }}>
+    <div className="card" style={{ maxWidth: '500px', margin: '40px auto', padding: '24px' }}>
       <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
         <span className="logo"><FiLogIn size={20} /></span>
         Login

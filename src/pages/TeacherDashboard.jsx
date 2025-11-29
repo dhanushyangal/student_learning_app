@@ -69,7 +69,7 @@ export default function TeacherDashboard() {
     <div style={{ width: '100%', minHeight: '100vh', background: '#f5f7fa' }}>
       <div className="content-wrapper">
         {/* Header */}
-        <div style={{
+        <div className="page-header" style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -84,7 +84,8 @@ export default function TeacherDashboard() {
               color: '#1e293b',
               display: 'flex',
               alignItems: 'center',
-              gap: '12px'
+              gap: '12px',
+              flexWrap: 'wrap'
             }}>
               <span style={{
                 width: '56px',
@@ -95,11 +96,12 @@ export default function TeacherDashboard() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'white',
-                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+                boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                flexShrink: 0
               }}>
                 <FiBook size={28} />
               </span>
-              Teacher Dashboard
+              <span>Teacher Dashboard</span>
             </h1>
             <p style={{ color: '#64748b', margin: 0, fontSize: '1rem' }}>
               Welcome, {user.first_name} {user.last_name} • Manage your courses and students
@@ -107,22 +109,28 @@ export default function TeacherDashboard() {
           </div>
         </div>
 
-      <div style={{ 
+      <div className="tabs-container" style={{ 
         display: 'flex', 
         gap: '8px', 
         marginBottom: '32px', 
         paddingBottom: '16px',
         borderBottom: '2px solid rgba(99, 102, 241, 0.1)',
-        overflowX: 'auto'
+        overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
       }}>
         <button
           onClick={() => setActiveTab('courses')}
-          className={activeTab === 'courses' ? 'btn' : 'btn ghost'}
+          className={`tab-button ${activeTab === 'courses' ? 'btn' : 'btn ghost'}`}
           style={{ 
             borderRadius: '12px',
             padding: '12px 24px',
             borderBottom: 'none',
             position: 'relative',
+            minHeight: '44px',
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
             ...(activeTab === 'courses' && {
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
@@ -134,11 +142,14 @@ export default function TeacherDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('assessments')}
-          className={activeTab === 'assessments' ? 'btn' : 'btn ghost'}
+          className={`tab-button ${activeTab === 'assessments' ? 'btn' : 'btn ghost'}`}
           style={{ 
             borderRadius: '12px',
             padding: '12px 24px',
             borderBottom: 'none',
+            minHeight: '44px',
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
             ...(activeTab === 'assessments' && {
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
@@ -150,11 +161,14 @@ export default function TeacherDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('reports')}
-          className={activeTab === 'reports' ? 'btn' : 'btn ghost'}
+          className={`tab-button ${activeTab === 'reports' ? 'btn' : 'btn ghost'}`}
           style={{ 
             borderRadius: '12px',
             padding: '12px 24px',
             borderBottom: 'none',
+            minHeight: '44px',
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
             ...(activeTab === 'reports' && {
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
@@ -168,7 +182,7 @@ export default function TeacherDashboard() {
 
       {activeTab === 'courses' && (
         <div className="card">
-          <div style={{ 
+          <div className="page-header" style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center', 

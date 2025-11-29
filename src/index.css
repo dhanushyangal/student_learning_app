@@ -400,13 +400,332 @@ header nav a:hover{
 	color: var(--danger);
 }
 
-/* Responsive */
-@media (max-width:720px){
-	header{ flex-direction:column; align-items:flex-start; }
-	.todo-list li{ flex-direction:column; align-items:stretch; }
-	.actions{ justify-content:flex-end; }
-	.container {
-		padding: 24px;
+/* Responsive - Mobile First Approach */
+/* Large screens (desktop) */
+@media (min-width: 1024px) {
+	.content-wrapper {
+		padding: 32px;
+	}
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 1023px) {
+	.content-wrapper {
+		padding: 20px;
+	}
+	
+	.card {
+		padding: 20px;
+	}
+	
+	header h1 {
+		font-size: 1.75rem;
+	}
+}
+
+/* Small screens (mobile) */
+@media (max-width: 768px) {
+	.content-wrapper {
+		padding: 16px;
+	}
+	
+	.card {
+		padding: 16px;
+		margin-bottom: 16px;
+	}
+	
+	.card h2 {
+		font-size: 1.25rem;
+	}
+	
+	.card h3 {
+		font-size: 1.125rem;
+	}
+	
+	header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+		margin-bottom: 24px;
+		padding-bottom: 16px;
+	}
+	
+	header h1 {
+		font-size: 1.5rem;
+	}
+	
+	.todo-list li {
+		flex-direction: column;
+		align-items: stretch;
+		padding: 16px;
+		gap: 12px;
+	}
+	
+	.actions {
+		justify-content: flex-end;
+		width: 100%;
+		flex-wrap: wrap;
+	}
+	
+	.actions button,
+	.actions a {
+		min-height: 44px;
+		min-width: 44px;
+		font-size: 0.875rem;
+		padding: 10px 16px;
+	}
+	
+	.form input,
+	.form textarea,
+	.form select {
+		padding: 12px 14px;
+		font-size: 16px; /* Prevents zoom on iOS */
+	}
+	
+	.form .form-actions {
+		flex-direction: column;
+		width: 100%;
+	}
+	
+	.form .form-actions button {
+		width: 100%;
+		min-height: 44px;
+	}
+	
+	.btn {
+		min-height: 44px;
+		padding: 12px 20px;
+		font-size: 0.9375rem;
+	}
+	
+	.btn.icon {
+		min-width: 44px;
+		min-height: 44px;
+	}
+	
+	/* Grid layouts become single column */
+	.grid-responsive {
+		grid-template-columns: 1fr !important;
+	}
+	
+	/* Statistics cards stack */
+	.stats-grid {
+		grid-template-columns: 1fr !important;
+		gap: 12px;
+	}
+	
+	/* Two column layouts become single */
+	.two-column {
+		grid-template-columns: 1fr !important;
+		gap: 16px;
+	}
+	
+	/* Course cards grid */
+	.courses-grid {
+		grid-template-columns: 1fr !important;
+	}
+	
+	/* Tabs scroll horizontally */
+	.tabs-container {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+	
+	.tabs-container::-webkit-scrollbar {
+		display: none;
+	}
+	
+	.tab-button {
+		white-space: nowrap;
+		flex-shrink: 0;
+		padding: 10px 16px;
+		font-size: 0.875rem;
+	}
+	
+	/* Modal improvements */
+	.modal-content {
+		width: 95% !important;
+		max-width: 95% !important;
+		margin: 10px !important;
+		max-height: 95vh !important;
+		padding: 16px !important;
+	}
+	
+	/* Header improvements */
+	.page-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 16px;
+	}
+	
+	.page-header h1 {
+		font-size: 1.5rem;
+	}
+	
+	/* Empty state improvements */
+	.empty {
+		padding: 40px 20px;
+		font-size: 0.9375rem;
+	}
+	
+	/* Badge improvements */
+	.badge {
+		font-size: 0.75rem;
+		padding: 4px 10px;
+	}
+	
+	/* Logo size on mobile */
+	.logo {
+		width: 40px;
+		height: 40px;
+	}
+	
+	/* Container background decoration hidden on mobile */
+	.container::before {
+		display: none;
+	}
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+	.content-wrapper {
+		padding: 12px;
+	}
+	
+	.card {
+		padding: 12px;
+		border-radius: 12px;
+	}
+	
+	header h1 {
+		font-size: 1.25rem;
+	}
+	
+	.card h2 {
+		font-size: 1.125rem;
+	}
+	
+	.btn {
+		padding: 10px 16px;
+		font-size: 0.875rem;
+	}
+	
+	.todo-list li {
+		padding: 12px;
+	}
+	
+	.form input,
+	.form textarea,
+	.form select {
+		padding: 10px 12px;
+	}
+	
+	/* Statistics cards smaller text */
+	.stats-card {
+		padding: 16px;
+	}
+	
+	.stats-card .stat-value {
+		font-size: 2rem;
+	}
+	
+	.stats-card .stat-label {
+		font-size: 0.8125rem;
+	}
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+	/* Remove hover effects on touch devices */
+	.btn:hover {
+		transform: none;
+	}
+	
+	.card:hover {
+		transform: none;
+	}
+	
+	.todo-list li:hover {
+		transform: none;
+	}
+	
+	/* Increase touch targets */
+	button, a, input[type="button"], input[type="submit"] {
+		min-height: 44px;
+		min-width: 44px;
+	}
+	
+	/* Better tap feedback */
+	.btn:active,
+	button:active {
+		opacity: 0.8;
+		transform: scale(0.98);
+	}
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+	.content-wrapper {
+		padding: 12px;
+	}
+	
+	header {
+		margin-bottom: 16px;
+		padding-bottom: 12px;
+	}
+}
+
+/* Additional mobile improvements */
+@media (max-width: 768px) {
+	/* Login/Register cards */
+	.card {
+		margin: 20px auto !important;
+		max-width: calc(100% - 32px) !important;
+	}
+	
+	/* Demo accounts section */
+	.demo-accounts {
+		font-size: 0.875rem;
+	}
+	
+	/* Better spacing for mobile */
+	.form label {
+		margin-bottom: 12px;
+	}
+	
+	/* Modal close buttons */
+	.modal-content button[aria-label="Close"] {
+		top: 12px !important;
+		right: 12px !important;
+	}
+	
+	/* Statistics cards text size */
+	.stats-card .stat-value {
+		font-size: 2rem;
+	}
+	
+	.stats-card .stat-label {
+		font-size: 0.8125rem;
+	}
+	
+	/* Prevent text overflow */
+	.todo-list strong {
+		word-break: break-word;
+	}
+	
+	.todo-list p {
+		word-break: break-word;
+	}
+	
+	/* Better button spacing */
+	.actions {
+		gap: 8px;
+	}
+	
+	/* Course cards full width on mobile */
+	.courses-grid > div {
+		width: 100%;
 	}
 }
 

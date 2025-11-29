@@ -67,7 +67,7 @@ export default function CourseBrowser({ studentId, enrolledCourseIds = [], onEnr
         zIndex: 1000,
         padding: '20px'
       }}>
-        <div className="card" style={{ 
+        <div className="card modal-content" style={{ 
           maxWidth: '900px', 
           width: '100%', 
           maxHeight: '90vh', 
@@ -84,18 +84,22 @@ export default function CourseBrowser({ studentId, enrolledCourseIds = [], onEnr
               color: 'white', 
               border: 'none', 
               borderRadius: '50%', 
-              width: '40px', 
-              height: '40px', 
+              width: '44px', 
+              height: '44px', 
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '24px',
               fontWeight: 'bold',
-              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)'
+              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.3)',
+              minWidth: '44px',
+              minHeight: '44px',
+              zIndex: 10
             }}
+            aria-label="Close"
           >
-            <FiX />
+            <FiX size={20} />
           </button>
           <h2 style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <FiBook size={28} color="#6366f1" />
@@ -169,7 +173,7 @@ export default function CourseBrowser({ studentId, enrolledCourseIds = [], onEnr
               </p>
             </div>
           ) : (
-            <div style={{ 
+            <div className="courses-grid" style={{ 
               display: 'grid', 
               gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', 
               gap: '20px' 
@@ -351,7 +355,7 @@ export default function CourseBrowser({ studentId, enrolledCourseIds = [], onEnr
           {searchTerm ? 'No courses found' : 'No available courses'}
         </p>
       ) : (
-        <div style={{ 
+        <div className="courses-grid" style={{ 
           display: 'grid', 
           gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
           gap: '20px' 
