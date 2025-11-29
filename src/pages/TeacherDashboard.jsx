@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import API from '../api';
 import { FiPlus, FiBook, FiFileText, FiUsers, FiBarChart2, FiEdit2, FiTrash2, FiLogOut, FiCheckCircle } from 'react-icons/fi';
 import CourseForm from '../components/CourseForm';
@@ -10,6 +11,7 @@ import GradeAssessment from '../components/GradeAssessment';
 
 export default function TeacherDashboard() {
   const { user, logout } = useAuth();
+  const { darkMode } = useTheme();
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [assessments, setAssessments] = useState([]);
@@ -66,7 +68,7 @@ export default function TeacherDashboard() {
   );
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh', background: '#f5f7fa' }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: darkMode ? '#0f172a' : '#f5f7fa' }}>
       <div className="content-wrapper">
         {/* Header */}
         <div className="page-header" style={{
@@ -81,7 +83,7 @@ export default function TeacherDashboard() {
               fontSize: '2rem', 
               fontWeight: '700', 
               margin: '0 0 8px 0',
-              color: '#1e293b',
+              color: darkMode ? '#f1f5f9' : '#1e293b',
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
@@ -103,7 +105,7 @@ export default function TeacherDashboard() {
               </span>
               <span>Teacher Dashboard</span>
             </h1>
-            <p style={{ color: '#64748b', margin: 0, fontSize: '1rem' }}>
+            <p style={{ color: darkMode ? '#cbd5e1' : '#64748b', margin: 0, fontSize: '1rem' }}>
               Welcome, {user.first_name} {user.last_name} • Manage your courses and students
             </p>
           </div>
@@ -114,7 +116,7 @@ export default function TeacherDashboard() {
         gap: '8px', 
         marginBottom: '32px', 
         paddingBottom: '16px',
-        borderBottom: '2px solid rgba(99, 102, 241, 0.1)',
+        borderBottom: darkMode ? '2px solid rgba(255,255,255,0.1)' : '2px solid rgba(99, 102, 241, 0.1)',
         overflowX: 'auto',
         WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none',

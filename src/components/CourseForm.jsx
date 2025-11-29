@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api';
+import { useTheme } from '../context/ThemeContext';
 import { FiX } from 'react-icons/fi';
 
 export default function CourseForm({ course, onClose, onSuccess, teacherId }) {
+  const { darkMode } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     code: '',
@@ -85,7 +87,14 @@ export default function CourseForm({ course, onClose, onSuccess, teacherId }) {
         </button>
         <h2>{course ? 'Edit Course' : 'Create New Course'}</h2>
         
-        {error && <div style={{ color: '#ef4444', marginBottom: '15px', padding: '10px', background: '#fee', borderRadius: '8px' }}>{error}</div>}
+        {error && <div className="error-message" style={{ 
+          color: darkMode ? '#fca5a5' : '#ef4444', 
+          marginBottom: '15px', 
+          padding: '10px', 
+          background: darkMode ? 'rgba(239, 68, 68, 0.2)' : '#fee', 
+          borderRadius: '8px',
+          border: darkMode ? '1px solid rgba(239, 68, 68, 0.3)' : 'none'
+        }}>{error}</div>}
         
         <form onSubmit={handleSubmit} className="form">
           <label>

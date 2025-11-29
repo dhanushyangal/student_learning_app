@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import API from '../api';
 import { FiUserPlus, FiUser, FiMail, FiLock, FiBook } from 'react-icons/fi';
 
@@ -16,6 +17,7 @@ export default function Register() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { darkMode } = useTheme();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -50,7 +52,14 @@ export default function Register() {
         Register
       </h2>
       
-      {error && <div style={{ color: '#ef4444', marginBottom: '15px', padding: '10px', background: '#fee', borderRadius: '8px' }}>{error}</div>}
+      {error && <div className="error-message" style={{ 
+        color: darkMode ? '#fca5a5' : '#ef4444', 
+        marginBottom: '15px', 
+        padding: '10px', 
+        background: darkMode ? 'rgba(239, 68, 68, 0.2)' : '#fee', 
+        borderRadius: '8px',
+        border: darkMode ? '1px solid rgba(239, 68, 68, 0.3)' : 'none'
+      }}>{error}</div>}
       
       <form onSubmit={handleSubmit} className="form">
         <label>
@@ -122,7 +131,7 @@ export default function Register() {
         <label>
           <span className="form-icon"><FiBook /></span>
           Role
-          <select name="role" value={formData.role} onChange={handleChange} style={{ width: '100%', padding: '10px 12px', marginTop: '6px', borderRadius: '8px', border: '1px solid #e6e9ef', fontSize: '0.95rem', background: 'white' }}>
+          <select name="role" value={formData.role} onChange={handleChange} className="form select" style={{ width: '100%', padding: '10px 12px', marginTop: '6px', borderRadius: '8px', fontSize: '0.95rem' }}>
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
           </select>

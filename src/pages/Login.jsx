@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import API from '../api';
 import { FiLogIn, FiUser, FiLock, FiBook, FiInfo, FiCopy, FiCheck, FiEye, FiEyeOff } from 'react-icons/fi';
 
@@ -13,6 +14,7 @@ export default function Login() {
   const [copied, setCopied] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
+  const { darkMode } = useTheme();
   const navigate = useNavigate();
 
   const demoAccounts = [
@@ -246,7 +248,14 @@ export default function Login() {
         </div>
       )}
 
-      {error && <div style={{ color: '#ef4444', marginBottom: '15px', padding: '10px', background: '#fee', borderRadius: '8px' }}>{error}</div>}
+      {error && <div className="error-message" style={{ 
+        color: darkMode ? '#fca5a5' : '#ef4444', 
+        marginBottom: '15px', 
+        padding: '10px', 
+        background: darkMode ? 'rgba(239, 68, 68, 0.2)' : '#fee', 
+        borderRadius: '8px',
+        border: darkMode ? '1px solid rgba(239, 68, 68, 0.3)' : 'none'
+      }}>{error}</div>}
       
       <form onSubmit={handleSubmit} className="form">
         <label>

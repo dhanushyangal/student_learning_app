@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import API from '../api';
+import { useTheme } from '../context/ThemeContext';
 import { FiX } from 'react-icons/fi';
 
 export default function AssessmentForm({ assessment, courses, onClose, onSuccess, teacherId }) {
+  const { darkMode } = useTheme();
   const [formData, setFormData] = useState({
     course_id: '',
     title: '',
@@ -72,16 +74,41 @@ export default function AssessmentForm({ assessment, courses, onClose, onSuccess
       zIndex: 1000,
       padding: '20px'
     }}>
-      <div className="card" style={{ maxWidth: '500px', width: '100%', position: 'relative' }}>
+      <div className="card modal-content" style={{ maxWidth: '500px', width: '100%', position: 'relative' }}>
         <button
           onClick={onClose}
-          style={{ position: 'absolute', top: '10px', right: '10px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer' }}
+          style={{ 
+            position: 'absolute', 
+            top: '10px', 
+            right: '10px', 
+            background: '#ef4444', 
+            color: 'white', 
+            border: 'none', 
+            borderRadius: '50%', 
+            width: '44px', 
+            height: '44px', 
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: '44px',
+            minHeight: '44px',
+            zIndex: 10
+          }}
+          aria-label="Close"
         >
-          <FiX />
+          <FiX size={20} />
         </button>
         <h2>{assessment ? 'Edit Assessment' : 'Create New Assessment'}</h2>
         
-        {error && <div style={{ color: '#ef4444', marginBottom: '15px', padding: '10px', background: '#fee', borderRadius: '8px' }}>{error}</div>}
+        {error && <div className="error-message" style={{ 
+          color: darkMode ? '#fca5a5' : '#ef4444', 
+          marginBottom: '15px', 
+          padding: '10px', 
+          background: darkMode ? 'rgba(239, 68, 68, 0.2)' : '#fee', 
+          borderRadius: '8px',
+          border: darkMode ? '1px solid rgba(239, 68, 68, 0.3)' : 'none'
+        }}>{error}</div>}
         
         <form onSubmit={handleSubmit} className="form">
           <label>
@@ -91,7 +118,8 @@ export default function AssessmentForm({ assessment, courses, onClose, onSuccess
               value={formData.course_id}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '10px 12px', marginTop: '6px', borderRadius: '8px', border: '1px solid #e6e9ef', fontSize: '0.95rem', background: 'white' }}
+              className="form select"
+              style={{ width: '100%', padding: '10px 12px', marginTop: '6px', borderRadius: '8px', fontSize: '0.95rem' }}
             >
               <option value="">Select a course</option>
               {courses.map(course => (
@@ -127,13 +155,14 @@ export default function AssessmentForm({ assessment, courses, onClose, onSuccess
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <label>
               Type
-              <select
-                name="assessment_type"
-                value={formData.assessment_type}
-                onChange={handleChange}
-                required
-                style={{ width: '100%', padding: '10px 12px', marginTop: '6px', borderRadius: '8px', border: '1px solid #e6e9ef', fontSize: '0.95rem', background: 'white' }}
-              >
+            <select
+              name="assessment_type"
+              value={formData.assessment_type}
+              onChange={handleChange}
+              required
+              className="form select"
+              style={{ width: '100%', padding: '10px 12px', marginTop: '6px', borderRadius: '8px', fontSize: '0.95rem' }}
+            >
                 <option value="quiz">Quiz</option>
                 <option value="assignment">Assignment</option>
                 <option value="exam">Exam</option>

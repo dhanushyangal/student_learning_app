@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import API from '../api';
 import { 
   FiBook, 
@@ -23,6 +24,7 @@ import CourseBrowser from '../components/CourseBrowser';
 
 export default function StudentDashboard() {
   const { user, logout } = useAuth();
+  const { darkMode } = useTheme();
   const navigate = useNavigate();
   const [studentData, setStudentData] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -189,7 +191,7 @@ export default function StudentDashboard() {
   const performanceData = getPerformanceData();
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh', background: '#f5f7fa' }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: darkMode ? '#0f172a' : '#f5f7fa' }}>
       <div className="content-wrapper">
         {/* Header */}
         <div className="page-header" style={{
@@ -204,7 +206,7 @@ export default function StudentDashboard() {
               fontSize: '2rem', 
               fontWeight: '700', 
               margin: '0 0 8px 0',
-              color: '#1e293b',
+              color: darkMode ? '#f1f5f9' : '#1e293b',
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
@@ -226,7 +228,7 @@ export default function StudentDashboard() {
               </span>
               <span>Welcome back, {user.first_name}!</span>
             </h1>
-            <p style={{ color: '#64748b', margin: 0, fontSize: '1rem' }}>
+            <p style={{ color: darkMode ? '#cbd5e1' : '#64748b', margin: 0, fontSize: '1rem' }}>
               Track your learning progress and stay on top of your assignments
             </p>
           </div>
@@ -237,7 +239,7 @@ export default function StudentDashboard() {
           display: 'flex', 
           gap: '8px', 
           marginBottom: '32px',
-          borderBottom: '2px solid #e2e8f0',
+          borderBottom: darkMode ? '2px solid rgba(255,255,255,0.1)' : '2px solid #e2e8f0',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
@@ -259,7 +261,7 @@ export default function StudentDashboard() {
                 border: 'none',
                 background: 'transparent',
                 borderBottom: activeTab === tab.id ? '3px solid #6366f1' : '3px solid transparent',
-                color: activeTab === tab.id ? '#6366f1' : '#64748b',
+                color: activeTab === tab.id ? '#6366f1' : (darkMode ? '#94a3b8' : '#64748b'),
                 fontWeight: activeTab === tab.id ? '600' : '500',
                 cursor: 'pointer',
                 display: 'flex',
@@ -274,12 +276,12 @@ export default function StudentDashboard() {
               onMouseEnter={(e) => {
                 if (activeTab !== tab.id) {
                   e.target.style.color = '#6366f1';
-                  e.target.style.backgroundColor = 'rgba(99, 102, 241, 0.05)';
+                  e.target.style.backgroundColor = darkMode ? 'rgba(129, 140, 248, 0.1)' : 'rgba(99, 102, 241, 0.05)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTab !== tab.id) {
-                  e.target.style.color = '#64748b';
+                  e.target.style.color = darkMode ? '#94a3b8' : '#64748b';
                   e.target.style.backgroundColor = 'transparent';
                 }
               }}

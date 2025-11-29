@@ -788,39 +788,226 @@ header nav a:hover{
 
 /* Dark Mode Styles */
 .dark-mode {
-	--bg: #1a1a1a;
-	--card: #2d2d2d;
-	--muted: #9ca3af;
-	--accent: #ff6b5a;
-	--accent-2: #ff8e7a;
+	--bg: #0f172a;
+	--card: #1e293b;
+	--muted: #94a3b8;
+	--accent: #818cf8;
+	--accent-2: #a78bfa;
+	--accent-light: #c4b5fd;
+	--success: #10b981;
+	--warning: #f59e0b;
+	--danger: #ef4444;
+	--info: #3b82f6;
+	--glass: rgba(30, 41, 59, 0.8);
 }
 
 .dark-mode body {
 	background: #0f172a;
-	color: #f3f4f6;
+	color: #f1f5f9;
 }
 
 .dark-mode .container {
-	background: linear-gradient(180deg, #2d2d2d, #1f1f1f);
-	color: #f3f4f6;
+	background: #0f172a;
+	color: #f1f5f9;
+}
+
+.dark-mode .content-wrapper {
+	background: #0f172a;
 }
 
 .dark-mode .card {
-	background: #2d2d2d;
-	color: #f3f4f6;
+	background: #1e293b;
+	color: #f1f5f9;
+	border-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode .card h2,
+.dark-mode .card h3 {
+	color: #f1f5f9;
 }
 
 .dark-mode .todo-list li {
-	background: #1f1f1f;
+	background: #1e293b;
 	border-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode .todo-list li strong {
+	color: #f1f5f9;
+}
+
+.dark-mode .todo-list li p {
+	color: #cbd5e1;
+}
+
+.dark-mode .todo-list li .meta {
+	color: #94a3b8;
 }
 
 .dark-mode input,
 .dark-mode textarea,
 .dark-mode select {
-	background: #1f1f1f;
-	color: #f3f4f6;
+	background: #1e293b;
+	color: #f1f5f9;
 	border-color: rgba(255,255,255,0.2);
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus,
+.dark-mode select:focus {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+.dark-mode .form label {
+	color: #e2e8f0;
+}
+
+.dark-mode .empty {
+	color: #94a3b8;
+}
+
+.dark-mode .text-muted {
+	color: #94a3b8;
+}
+
+.dark-mode .badge {
+	background: rgba(129, 140, 248, 0.2);
+	color: var(--accent);
+}
+
+.dark-mode .badge.success {
+	background: rgba(16, 185, 129, 0.2);
+	color: var(--success);
+}
+
+.dark-mode .badge.warning {
+	background: rgba(245, 158, 11, 0.2);
+	color: var(--warning);
+}
+
+.dark-mode .badge.danger {
+	background: rgba(239, 68, 68, 0.2);
+	color: var(--danger);
+}
+
+.dark-mode header {
+	border-bottom-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode header h1 {
+	color: #f1f5f9;
+}
+
+.dark-mode header nav a {
+	color: var(--accent);
+}
+
+.dark-mode .btn.ghost {
+	border-color: rgba(129, 140, 248, 0.3);
+	color: var(--accent);
+}
+
+.dark-mode .btn.ghost:hover {
+	background: rgba(129, 140, 248, 0.1);
+	border-color: var(--accent);
+}
+
+.dark-mode .page-header h1 {
+	color: #f1f5f9;
+}
+
+.dark-mode .page-header p {
+	color: #cbd5e1;
+}
+
+/* Dark mode for statistics cards - keep gradients but adjust text */
+.dark-mode .stats-card {
+	opacity: 0.95;
+}
+
+/* Dark mode for course cards */
+.dark-mode .courses-grid > div {
+	background: #1e293b;
+	border-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode .courses-grid > div h3 {
+	color: #f1f5f9;
+}
+
+.dark-mode .courses-grid > div p {
+	color: #cbd5e1;
+}
+
+/* Dark mode for tabs */
+.dark-mode .tabs-container {
+	border-bottom-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode .tab-button {
+	color: #94a3b8;
+}
+
+.dark-mode .tab-button:hover {
+	color: var(--accent);
+	background-color: rgba(129, 140, 248, 0.1);
+}
+
+/* Dark mode for modals */
+.dark-mode .modal-content {
+	background: #1e293b;
+	color: #f1f5f9;
+}
+
+/* Dark mode for search inputs */
+.dark-mode input[type="text"]::placeholder {
+	color: #64748b;
+}
+
+/* Dark mode for error messages */
+.dark-mode .error-message {
+	background: rgba(239, 68, 68, 0.2);
+	color: #fca5a5;
+	border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Dark mode for select elements */
+.dark-mode select {
+	background: #1e293b;
+	color: #f1f5f9;
+	border-color: rgba(255,255,255,0.2);
+}
+
+.dark-mode select option {
+	background: #1e293b;
+	color: #f1f5f9;
+}
+
+/* Dark mode for empty states */
+.dark-mode .empty::before {
+	opacity: 0.3;
+}
+
+/* Dark mode for demo accounts section */
+.dark-mode .demo-accounts {
+	background: rgba(129, 140, 248, 0.1);
+	border-color: rgba(129, 140, 248, 0.2);
+}
+
+.dark-mode .demo-accounts > div {
+	background: #1e293b;
+	border-color: rgba(255,255,255,0.1);
+}
+
+.dark-mode .demo-accounts code {
+	background: #0f172a;
+	color: #cbd5e1;
+}
+
+/* Dark mode for loading states */
+.dark-mode .loading-spinner {
+	border-color: rgba(129, 140, 248, 0.2);
+	border-top-color: var(--accent);
 }
 
 /* Animations */
