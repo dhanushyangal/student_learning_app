@@ -13,6 +13,7 @@ import TeacherDashboard from './pages/TeacherDashboard'
 import StudentDashboard from './pages/StudentDashboard'
 import { createTheme } from '@mui/material/styles'
 import './index.css'
+import { Analytics } from "@vercel/analytics/react"
 
 const lightTheme = createTheme({
   palette: {
