@@ -21,11 +21,19 @@ export default function CourseReport({ courses }) {
   };
 
   const getGradeColor = (percentage) => {
-    if (!percentage) return '#6b7280';
-    if (percentage >= 90) return '#10b981';
-    if (percentage >= 80) return '#3b82f6';
-    if (percentage >= 70) return '#f59e0b';
+    const num = typeof percentage === 'number' ? percentage : parseFloat(percentage);
+    if (!num || isNaN(num)) return '#6b7280';
+    if (num >= 90) return '#10b981';
+    if (num >= 80) return '#3b82f6';
+    if (num >= 70) return '#f59e0b';
     return '#ef4444';
+  };
+
+  const formatPercentage = (percentage) => {
+    if (percentage === null || percentage === undefined) return 'N/A';
+    const num = typeof percentage === 'number' ? percentage : parseFloat(percentage);
+    if (isNaN(num)) return 'N/A';
+    return `${num.toFixed(1)}%`;
   };
 
   if (!selectedCourse) {
@@ -82,11 +90,11 @@ export default function CourseReport({ courses }) {
         </div>
         <div style={{ padding: '15px', background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', borderRadius: '8px', color: 'white' }}>
           <div style={{ fontSize: '0.9rem', opacity: 0.9 }}>Course Average</div>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{reportData.statistics.course_average.toFixed(1)}%</div>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{formatPercentage(reportData.statistics.course_average)}</div>
         </div>
         <div style={{ padding: '15px', background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', borderRadius: '8px', color: 'white' }}>
           <div style={{ fontSize: '0.9rem', opacity: 0.9 }}>Completion Rate</div>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{reportData.statistics.completion_rate.toFixed(1)}%</div>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{formatPercentage(reportData.statistics.completion_rate)}</div>
         </div>
       </div>
 
@@ -114,7 +122,7 @@ export default function CourseReport({ courses }) {
                 </td>
                 <td style={{ padding: '12px', textAlign: 'center' }}>
                   <span style={{ color: getGradeColor(student.average_percentage), fontWeight: 'bold', fontSize: '1.1rem' }}>
-                    {student.average_percentage ? `${student.average_percentage.toFixed(1)}%` : 'N/A'}
+                    {formatPercentage(student.average_percentage)}
                   </span>
                 </td>
                 <td style={{ padding: '12px', textAlign: 'center' }}>

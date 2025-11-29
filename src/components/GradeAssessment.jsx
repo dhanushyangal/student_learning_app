@@ -114,11 +114,16 @@ export default function GradeAssessment({ assessment, onClose, onSuccess }) {
                       </div>
                     </td>
                     <td style={{ padding: '12px', textAlign: 'center' }}>
-                      {grade.score ? (
-                        <span style={{ fontWeight: 'bold', color: grade.percentage >= 70 ? '#10b981' : '#ef4444' }}>
-                          {((grade.score / assessment.max_score) * 100).toFixed(1)}%
-                        </span>
-                      ) : (
+                      {grade.score && assessment.max_score ? (() => {
+                        const scoreNum = typeof grade.score === 'number' ? grade.score : parseFloat(grade.score) || 0;
+                        const maxScoreNum = typeof assessment.max_score === 'number' ? assessment.max_score : parseFloat(assessment.max_score) || 1;
+                        const percentage = maxScoreNum > 0 ? (scoreNum / maxScoreNum) * 100 : 0;
+                        return (
+                          <span style={{ fontWeight: 'bold', color: percentage >= 70 ? '#10b981' : '#ef4444' }}>
+                            {isNaN(percentage) ? 'N/A' : `${percentage.toFixed(1)}%`}
+                          </span>
+                        );
+                      })() : (
                         <span style={{ color: '#6b7280' }}>N/A</span>
                       )}
                     </td>

@@ -71,11 +71,19 @@ export default function StudentDashboard() {
   };
 
   const getGradeColor = (percentage) => {
-    if (!percentage) return '#6b7280';
-    if (percentage >= 90) return '#10b981';
-    if (percentage >= 80) return '#3b82f6';
-    if (percentage >= 70) return '#f59e0b';
+    const num = typeof percentage === 'number' ? percentage : parseFloat(percentage);
+    if (!num || isNaN(num)) return '#6b7280';
+    if (num >= 90) return '#10b981';
+    if (num >= 80) return '#3b82f6';
+    if (num >= 70) return '#f59e0b';
     return '#ef4444';
+  };
+
+  const formatPercentage = (percentage) => {
+    if (percentage === null || percentage === undefined) return 'N/A';
+    const num = typeof percentage === 'number' ? percentage : parseFloat(percentage);
+    if (isNaN(num)) return 'N/A';
+    return `${num.toFixed(1)}%`;
   };
 
   const getUpcomingAssignments = () => {
@@ -96,14 +104,22 @@ export default function StudentDashboard() {
   };
 
   const getPerformanceData = () => {
-    if (!studentData) return [];
+    if (!studentData || !studentData.assessments) return [];
     return studentData.assessments
-      .filter(a => a.score !== null)
-      .map((a, idx) => ({
-        name: `A${idx + 1}`,
-        score: a.percentage,
-        average: studentData.statistics.average_percentage
-      }));
+      .filter(a => a.score !== null && a.percentage !== null && a.percentage !== undefined)
+      .map((a, idx) => {
+        const percentage = typeof a.percentage === 'number' ? a.percentage : parseFloat(a.percentage);
+        const avgPercentage = studentData.statistics?.average_percentage 
+          ? (typeof studentData.statistics.average_percentage === 'number' 
+              ? studentData.statistics.average_percentage 
+              : parseFloat(studentData.statistics.average_percentage))
+          : 0;
+        return {
+          name: `A${idx + 1}`,
+          score: isNaN(percentage) ? 0 : percentage,
+          average: isNaN(avgPercentage) ? 0 : avgPercentage
+        };
+      });
   };
 
   if (loading) return (
@@ -405,7 +421,7 @@ export default function StudentDashboard() {
               >
                 <div style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Completed</div>
                 <div style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
-                  {studentData.statistics.graded_assessments}/{studentData.statistics.total_assessments}
+                  {studentData.statistics?.graded_assessments || 0}/{studentData.statistics?.total_assessments || 0}
                 </div>
               </div>
               <div style={{ 
@@ -422,7 +438,7 @@ export default function StudentDashboard() {
               >
                 <div style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '8px', fontWeight: '500' }}>Average Score</div>
                 <div style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: '1' }}>
-                  {studentData.statistics.average_percentage ? `${studentData.statistics.average_percentage.toFixed(1)}%` : 'N/A'}
+                  {formatPercentage(studentData.statistics.average_percentage)}
                 </div>
               </div>
               <div style={{ 
@@ -498,7 +514,7 @@ export default function StudentDashboard() {
                               fontWeight: 'bold', 
                               fontSize: '1.125rem' 
                             }}>
-                              {grade.percentage?.toFixed(1)}%
+                              {formatPercentage(grade.percentage)}
                             </span>
                           </div>
                         </div>
@@ -602,8 +618,13 @@ export default function StudentDashboard() {
                   const courseAssessments = studentData.assessments.filter(a => a.course_id === course.id);
                   const completed = courseAssessments.filter(a => a.score !== null).length;
                   const total = courseAssessments.length;
-                  const avgScore = courseAssessments.filter(a => a.score !== null)
-                    .reduce((sum, a) => sum + (a.percentage || 0), 0) / completed || 0;
+                  const avgScore = completed > 0
+                    ? courseAssessments.filter(a => a.score !== null)
+                        .reduce((sum, a) => {
+                          const pct = typeof a.percentage === 'number' ? a.percentage : parseFloat(a.percentage) || 0;
+                          return sum + (isNaN(pct) ? 0 : pct);
+                        }, 0) / completed
+                    : 0;
 
                   return (
                     <div key={course.id} className="card" style={{
@@ -643,7 +664,7 @@ export default function StudentDashboard() {
                           fontSize: '1.5rem',
                           fontWeight: 'bold'
                         }}>
-                          {avgScore > 0 ? avgScore.toFixed(0) : '—'}
+                          {avgScore > 0 && !isNaN(avgScore) ? Math.round(avgScore) : '—'}
                         </div>
                       </div>
                       <p style={{ fontSize: '0.875rem', color: '#64748b', margin: '12px 0' }}>
@@ -739,7 +760,7 @@ export default function StudentDashboard() {
                             color: getGradeColor(assessment.percentage),
                             fontWeight: '600'
                           }}>
-                            <FiStar size={14} /> {assessment.percentage?.toFixed(1)}%
+                            <FiStar size={14} /> {formatPercentage(assessment.percentage)}
                           </span>
                         )}
                       </div>
@@ -758,7 +779,7 @@ export default function StudentDashboard() {
                               fontWeight: 'bold', 
                               fontSize: '1.25rem' 
                             }}>
-                              {assessment.percentage?.toFixed(1)}%
+                              {formatPercentage(assessment.percentage)}
                             </span>
                           </div>
                           {assessment.feedback && (
@@ -822,7 +843,10 @@ export default function StudentDashboard() {
                   const courseAssessments = studentData.assessments.filter(a => a.course_id === course.id);
                   const graded = courseAssessments.filter(a => a.score !== null);
                   const avgPercentage = graded.length > 0
-                    ? graded.reduce((sum, a) => sum + (a.percentage || 0), 0) / graded.length
+                    ? graded.reduce((sum, a) => {
+                        const pct = typeof a.percentage === 'number' ? a.percentage : parseFloat(a.percentage) || 0;
+                        return sum + (isNaN(pct) ? 0 : pct);
+                      }, 0) / graded.length
                     : null;
 
                   return (
@@ -841,13 +865,17 @@ export default function StudentDashboard() {
                             color: getGradeColor(avgPercentage),
                             fontSize: '1.125rem'
                           }}>
-                            {avgPercentage ? `${avgPercentage.toFixed(1)}%` : 'N/A'}
+                            {formatPercentage(avgPercentage)}
                           </span>
                         </div>
                         <div style={{ height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
                           <div style={{
                             height: '100%',
-                            width: `${avgPercentage || 0}%`,
+                            width: `${(() => {
+                              if (!avgPercentage) return 0;
+                              const pct = typeof avgPercentage === 'number' ? avgPercentage : parseFloat(avgPercentage) || 0;
+                              return isNaN(pct) ? 0 : Math.max(0, Math.min(100, pct));
+                            })()}%`,
                             background: getGradeColor(avgPercentage),
                             transition: 'width 0.3s'
                           }} />
@@ -897,7 +925,7 @@ export default function StudentDashboard() {
                   Completed {studentData.statistics.graded_assessments} assignment{studentData.statistics.graded_assessments !== 1 ? 's' : ''}
                 </div>
               </div>
-              {studentData.statistics.average_percentage && studentData.statistics.average_percentage >= 90 && (
+              {studentData.statistics?.average_percentage && typeof studentData.statistics.average_percentage === 'number' && studentData.statistics.average_percentage >= 90 && (
                 <div style={{
                   padding: '24px',
                   background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
@@ -907,11 +935,11 @@ export default function StudentDashboard() {
                   <FiStar size={32} style={{ marginBottom: '12px' }} />
                   <div style={{ fontWeight: '600', marginBottom: '4px' }}>Honor Student</div>
                   <div style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                    Maintained {studentData.statistics.average_percentage.toFixed(1)}% average
+                    Maintained {formatPercentage(studentData.statistics.average_percentage)} average
                   </div>
                 </div>
               )}
-              {studentData.statistics.average_percentage && studentData.statistics.average_percentage >= 80 && studentData.statistics.average_percentage < 90 && (
+              {studentData.statistics?.average_percentage && typeof studentData.statistics.average_percentage === 'number' && studentData.statistics.average_percentage >= 80 && studentData.statistics.average_percentage < 90 && (
                 <div style={{
                   padding: '24px',
                   background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
@@ -921,7 +949,7 @@ export default function StudentDashboard() {
                   <FiStar size={32} style={{ marginBottom: '12px' }} />
                   <div style={{ fontWeight: '600', marginBottom: '4px' }}>Excellent Performance</div>
                   <div style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-                    Average score: {studentData.statistics.average_percentage.toFixed(1)}%
+                    Average score: {formatPercentage(studentData.statistics.average_percentage)}
                   </div>
                 </div>
               )}
@@ -1011,7 +1039,7 @@ export default function StudentDashboard() {
                                   fontWeight: 'bold', 
                                   fontSize: '1.5rem' 
                                 }}>
-                                  {assessment.percentage?.toFixed(1)}%
+                                  {formatPercentage(assessment.percentage)}
                                 </span>
                               </div>
                               {assessment.feedback && (
@@ -1057,7 +1085,7 @@ export default function StudentDashboard() {
                                 fontWeight: 'bold',
                                 fontSize: '1.125rem'
                               }}>
-                                {outcome.average_percentage ? `${outcome.average_percentage.toFixed(1)}%` : 'N/A'}
+                                {formatPercentage(outcome.average_percentage)}
                               </span>
                             </div>
                             <div style={{ height: '10px', background: '#e2e8f0', borderRadius: '5px', overflow: 'hidden' }}>
