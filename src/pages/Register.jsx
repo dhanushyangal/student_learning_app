@@ -66,31 +66,31 @@ export default function Register() {
           />
         </label>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-          <label>
-            First Name
-            <input
-              type="text"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              required
-              placeholder="First name"
-            />
-          </label>
-          
-          <label>
-            Last Name
-            <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              required
-              placeholder="Last name"
-            />
-          </label>
-        </div>
+        <label>
+          <span className="form-icon"><FiUser /></span>
+          First Name
+          <input
+            type="text"
+            name="first_name"
+            value={formData.first_name}
+            onChange={handleChange}
+            required
+            placeholder="First name"
+          />
+        </label>
+        
+        <label>
+          <span className="form-icon"><FiUser /></span>
+          Last Name
+          <input
+            type="text"
+            name="last_name"
+            value={formData.last_name}
+            onChange={handleChange}
+            required
+            placeholder="Last name"
+          />
+        </label>
         
         <label>
           <span className="form-icon"><FiMail /></span>

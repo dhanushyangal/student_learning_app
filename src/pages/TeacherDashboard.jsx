@@ -193,7 +193,106 @@ export default function TeacherDashboard() {
           </div>
 
           {courses.length === 0 ? (
-            <p className="empty">No courses yet. Create your first course!</p>
+            <div style={{
+              textAlign: 'center',
+              padding: '60px 40px',
+              background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+              borderRadius: '16px',
+              border: '2px dashed #cbd5e1'
+            }}>
+              <div style={{
+                width: '120px',
+                height: '120px',
+                margin: '0 auto 24px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 8px 24px rgba(102, 126, 234, 0.3)'
+              }}>
+                <FiBook size={56} color="white" />
+              </div>
+              <h3 style={{ 
+                fontSize: '1.5rem', 
+                fontWeight: '700', 
+                color: '#1e293b', 
+                marginBottom: '12px' 
+              }}>
+                Welcome to Your Dashboard!
+              </h3>
+              <p style={{ 
+                fontSize: '1rem', 
+                color: '#64748b', 
+                marginBottom: '32px',
+                maxWidth: '500px',
+                margin: '0 auto 32px'
+              }}>
+                Get started by creating your first course. You'll be able to manage students, 
+                create assessments, and track learning outcomes.
+              </p>
+              <button 
+                onClick={() => { setShowCourseForm(true); setSelectedCourse(null); }} 
+                className="btn"
+                style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                  padding: '14px 32px',
+                  fontSize: '1.0625rem',
+                  fontWeight: '600'
+                }}
+              >
+                <FiPlus size={20} style={{ marginRight: '8px' }} /> Create Your First Course
+              </button>
+              <div style={{ 
+                marginTop: '40px', 
+                padding: '24px', 
+                background: 'white', 
+                borderRadius: '12px',
+                textAlign: 'left',
+                maxWidth: '600px',
+                margin: '40px auto 0'
+              }}>
+                <h4 style={{ color: '#1e293b', marginBottom: '16px', fontSize: '1.125rem' }}>
+                  Quick Start Guide:
+                </h4>
+                <ul style={{ 
+                  listStyle: 'none', 
+                  padding: 0, 
+                  margin: 0,
+                  display: 'grid',
+                  gap: '12px'
+                }}>
+                  {[
+                    { icon: FiBook, text: 'Create courses for your subjects' },
+                    { icon: FiFileText, text: 'Add assessments and assignments' },
+                    { icon: FiUsers, text: 'Enroll students and track progress' },
+                    { icon: FiBarChart2, text: 'View detailed reports and analytics' }
+                  ].map((item, idx) => (
+                    <li key={idx} style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '12px',
+                      color: '#475569'
+                    }}>
+                      <div style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: 'rgba(99, 102, 241, 0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        <item.icon size={18} color="#6366f1" />
+                      </div>
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           ) : (
             <ul className="todo-list">
               {courses.map(course => (
@@ -242,7 +341,75 @@ export default function TeacherDashboard() {
           </div>
 
           {assessments.length === 0 ? (
-            <p className="empty">No assessments yet. Create your first assessment!</p>
+            <div style={{
+              textAlign: 'center',
+              padding: '60px 40px',
+              background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+              borderRadius: '16px',
+              border: '2px dashed #cbd5e1'
+            }}>
+              <div style={{
+                width: '100px',
+                height: '100px',
+                margin: '0 auto 24px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 8px 24px rgba(245, 87, 108, 0.3)'
+              }}>
+                <FiFileText size={48} color="white" />
+              </div>
+              <h3 style={{ 
+                fontSize: '1.5rem', 
+                fontWeight: '700', 
+                color: '#1e293b', 
+                marginBottom: '12px' 
+              }}>
+                No Assessments Yet
+              </h3>
+              <p style={{ 
+                fontSize: '1rem', 
+                color: '#64748b', 
+                marginBottom: '32px',
+                maxWidth: '500px',
+                margin: '0 auto 32px'
+              }}>
+                {courses.length === 0 
+                  ? 'Create a course first, then add assessments to track student progress.'
+                  : 'Create assessments for your courses to evaluate student learning and track outcomes.'}
+              </p>
+              {courses.length > 0 ? (
+                <button 
+                  onClick={() => { setShowAssessmentForm(true); setSelectedAssessment(null); }} 
+                  className="btn"
+                  style={{
+                    background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    boxShadow: '0 4px 12px rgba(245, 87, 108, 0.3)',
+                    padding: '14px 32px',
+                    fontSize: '1.0625rem',
+                    fontWeight: '600'
+                  }}
+                >
+                  <FiPlus size={20} style={{ marginRight: '8px' }} /> Create Your First Assessment
+                </button>
+              ) : (
+                <button 
+                  onClick={() => { setActiveTab('courses'); setShowCourseForm(true); }} 
+                  className="btn"
+                  style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                    padding: '14px 32px',
+                    fontSize: '1.0625rem',
+                    fontWeight: '600'
+                  }}
+                >
+                  <FiBook size={20} style={{ marginRight: '8px' }} /> Create a Course First
+                </button>
+              )}
+            </div>
           ) : (
             <ul className="todo-list">
               {assessments.map(assessment => (

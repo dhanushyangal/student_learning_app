@@ -19,6 +19,7 @@ import {
 } from 'react-icons/fi';
 import PerformanceChart from '../components/Charts/PerformanceChart';
 import GradeDistributionChart from '../components/Charts/GradeDistributionChart';
+import CourseBrowser from '../components/CourseBrowser';
 
 export default function StudentDashboard() {
   const { user, logout } = useAuth();
@@ -28,6 +29,7 @@ export default function StudentDashboard() {
   const [courseProgress, setCourseProgress] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [showCourseBrowser, setShowCourseBrowser] = useState(false);
 
   useEffect(() => {
     if (!user || user.role !== 'student') {
@@ -46,6 +48,11 @@ export default function StudentDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleEnrollSuccess = () => {
+    fetchStudentData();
+    setShowCourseBrowser(false);
   };
 
   const fetchCourseProgress = async (courseId) => {
@@ -114,11 +121,52 @@ export default function StudentDashboard() {
     </div>
   );
   
-  if (!studentData) return (
-    <div style={{ padding: '40px' }}>
-      <p className="empty">No data available</p>
-    </div>
-  );
+  if (!studentData) {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center' }}>
+        <div style={{
+          width: '120px',
+          height: '120px',
+          margin: '0 auto 24px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 8px 24px rgba(99, 102, 241, 0.3)'
+        }}>
+          <FiBook size={56} color="white" />
+        </div>
+        <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', marginBottom: '12px' }}>
+          Welcome, {user.first_name}!
+        </h3>
+        <p style={{ fontSize: '1rem', color: '#64748b', marginBottom: '32px' }}>
+          Let's get you started by enrolling in your first course.
+        </p>
+        <button 
+          onClick={() => setShowCourseBrowser(true)}
+          className="btn"
+          style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+            padding: '14px 32px',
+            fontSize: '1.0625rem',
+            fontWeight: '600'
+          }}
+        >
+          <FiBook size={20} style={{ marginRight: '8px' }} /> Browse Available Courses
+        </button>
+        {showCourseBrowser && (
+          <CourseBrowser
+            studentId={user.id}
+            enrolledCourseIds={[]}
+            onEnrollSuccess={handleEnrollSuccess}
+            onClose={() => setShowCourseBrowser(false)}
+          />
+        )}
+      </div>
+    );
+  }
 
   const upcomingAssignments = getUpcomingAssignments();
   const recentGrades = getRecentGrades();
@@ -221,13 +269,111 @@ export default function StudentDashboard() {
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <>
-            {/* Statistics Cards */}
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
-              gap: '20px',
-              marginBottom: '32px'
-            }}>
+            {studentData.courses.length === 0 ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '80px 40px',
+                background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                borderRadius: '16px',
+                border: '2px dashed #cbd5e1'
+              }}>
+                <div style={{
+                  width: '140px',
+                  height: '140px',
+                  margin: '0 auto 32px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 12px 32px rgba(99, 102, 241, 0.4)',
+                  animation: 'pulse 2s infinite'
+                }}>
+                  <FiBook size={72} color="white" />
+                </div>
+                <h2 style={{ 
+                  fontSize: '2rem', 
+                  fontWeight: '700', 
+                  color: '#1e293b', 
+                  marginBottom: '16px' 
+                }}>
+                  Welcome to Your Learning Dashboard!
+                </h2>
+                <p style={{ 
+                  fontSize: '1.125rem', 
+                  color: '#64748b', 
+                  marginBottom: '40px',
+                  maxWidth: '600px',
+                  margin: '0 auto 40px',
+                  lineHeight: '1.7'
+                }}>
+                  Get started by browsing and enrolling in courses. Once enrolled, you'll be able to 
+                  track your assignments, view grades, monitor your performance, and achieve your learning goals.
+                </p>
+                <button 
+                  onClick={() => setShowCourseBrowser(true)}
+                  className="btn"
+                  style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    boxShadow: '0 6px 20px rgba(99, 102, 241, 0.4)',
+                    padding: '16px 40px',
+                    fontSize: '1.125rem',
+                    fontWeight: '600',
+                    marginBottom: '40px'
+                  }}
+                >
+                  <FiBook size={22} style={{ marginRight: '10px' }} /> Browse & Enroll in Courses
+                </button>
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                  gap: '20px',
+                  maxWidth: '800px',
+                  margin: '0 auto'
+                }}>
+                  {[
+                    { icon: FiBook, title: 'Enroll in Courses', desc: 'Browse and join courses' },
+                    { icon: FiFileText, title: 'Track Assignments', desc: 'View and complete tasks' },
+                    { icon: FiBarChart2, title: 'Monitor Progress', desc: 'See your performance' },
+                    { icon: FiAward, title: 'Achieve Goals', desc: 'Track your achievements' }
+                  ].map((item, idx) => (
+                    <div key={idx} style={{
+                      padding: '24px',
+                      background: 'white',
+                      borderRadius: '12px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+                    }}>
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '12px',
+                        background: 'rgba(99, 102, 241, 0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '12px'
+                      }}>
+                        <item.icon size={24} color="#6366f1" />
+                      </div>
+                      <h4 style={{ fontSize: '1rem', fontWeight: '600', color: '#1e293b', marginBottom: '6px' }}>
+                        {item.title}
+                      </h4>
+                      <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>
+                        {item.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Statistics Cards */}
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
+                  gap: '20px',
+                  marginBottom: '32px'
+                }}>
               <div style={{ 
                 padding: '24px', 
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
@@ -373,18 +519,83 @@ export default function StudentDashboard() {
                 <PerformanceChart data={performanceData} type="line" />
               </div>
             )}
+              </>
+            )}
           </>
         )}
 
         {/* Courses Tab */}
         {activeTab === 'courses' && (
           <div className="card">
-            <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-              <FiBook size={24} color="#6366f1" />
-              My Courses
-            </h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+              <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: 0 }}>
+                <FiBook size={24} color="#6366f1" />
+                My Courses
+              </h2>
+              <button 
+                onClick={() => setShowCourseBrowser(true)}
+                className="btn"
+                style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+                }}
+              >
+                <FiBook size={18} style={{ marginRight: '8px' }} /> Browse More Courses
+              </button>
+            </div>
             {studentData.courses.length === 0 ? (
-              <p className="empty">You are not enrolled in any courses yet.</p>
+              <div style={{
+                textAlign: 'center',
+                padding: '60px 40px',
+                background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                borderRadius: '16px',
+                border: '2px dashed #cbd5e1'
+              }}>
+                <div style={{
+                  width: '120px',
+                  height: '120px',
+                  margin: '0 auto 24px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 8px 24px rgba(99, 102, 241, 0.3)'
+                }}>
+                  <FiBook size={56} color="white" />
+                </div>
+                <h3 style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700', 
+                  color: '#1e293b', 
+                  marginBottom: '12px' 
+                }}>
+                  No Courses Yet
+                </h3>
+                <p style={{ 
+                  fontSize: '1rem', 
+                  color: '#64748b', 
+                  marginBottom: '32px',
+                  maxWidth: '500px',
+                  margin: '0 auto 32px'
+                }}>
+                  Browse available courses and enroll to start tracking your learning progress, 
+                  view assignments, and see your grades.
+                </p>
+                <button 
+                  onClick={() => setShowCourseBrowser(true)}
+                  className="btn"
+                  style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+                    padding: '14px 32px',
+                    fontSize: '1.0625rem',
+                    fontWeight: '600'
+                  }}
+                >
+                  <FiBook size={20} style={{ marginRight: '8px' }} /> Browse Available Courses
+                </button>
+              </div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
                 {studentData.courses.map(course => {
@@ -869,6 +1080,16 @@ export default function StudentDashboard() {
               )}
             </div>
           </div>
+        )}
+
+        {/* Course Browser Modal */}
+        {showCourseBrowser && (
+          <CourseBrowser
+            studentId={user.id}
+            enrolledCourseIds={studentData.courses.map(c => c.id)}
+            onEnrollSuccess={handleEnrollSuccess}
+            onClose={() => setShowCourseBrowser(false)}
+          />
         )}
       </div>
     </div>
