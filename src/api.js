@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { mockApi } from './services/mockApi';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://student-learning-backend.vercel.app/api';
 // Force use of real API (set to false to use mock)
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
 
